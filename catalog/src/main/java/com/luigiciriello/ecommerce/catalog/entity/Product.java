@@ -14,7 +14,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +22,6 @@ public class Product {
     private String code;
 
     private String name;
-    private String price;
+
+    private Double price;
 }
