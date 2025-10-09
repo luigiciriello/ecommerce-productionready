@@ -1,0 +1,28 @@
+server:
+  port: 2550
+
+spring:
+  application:
+    name: catalog
+  config:
+    import: optional:configserver
+  cloud:
+    config:
+      enabled: false
+  sql:
+    init:
+      mode: always #utilizzo di schema.sql per inizializzare il db
+  datasource:
+    url: jdbc:postgresql://localhost:5432/catalog
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true #utilizzo di schema.sql per inizializzare il db
