@@ -1,0 +1,94 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar binary ok to keep tracked via hash if desired
+
+# Maven build outputs
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Spring Boot
+.spring-boot-devtools.properties
+spring.log
+
+# Logs
+logs/
+*.log
+*.log.*
+hs_err_pid*
+replay_pid*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# VS Code
+.vscode/
+.history/
+
+# Eclipse (se qualcuno lo usa)
+.project
+.classpath
+.settings/
+.apt_generated/
+.factorypath
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+
+# Coverage / reports
+.coverage
+coverage/
+*.exec
+jacoco.exec
+site/
+
+# Tests temp
+surefire-reports/
+failsafe-reports/
+.testcontainers.properties
+
+# Docker / Compose overrides locali
+docker/local/**
+docker/.env.local
+*.env
+!.env.example
+
+# Keystores / certs locali
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+*.crt
+
+# Misc
+.cache/
+tmp/
+*.swp
+*.swo
+
+# OS-specific
+ehthumbs.db
+Icon?
