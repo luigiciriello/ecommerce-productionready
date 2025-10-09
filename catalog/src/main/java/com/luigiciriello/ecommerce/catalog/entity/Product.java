@@ -1,4 +1,4 @@
-package com.luigiciriello.ecommerce.customers.entity;
+package com.luigiciriello.ecommerce.catalog.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

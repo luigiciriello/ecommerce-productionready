@@ -1,6 +1,6 @@
-package com.luigiciriello.ecommerce.customers.exception;
+package com.luigiciriello.ecommerce.catalog.exception;
 
-import com.luigiciriello.ecommerce.customers.dto.ErrorResponseDto;
+import com.luigiciriello.ecommerce.catalog.dto.ErrorResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

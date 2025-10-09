@@ -1,11 +1,11 @@
-package com.luigiciriello.ecommerce.customers.service.impl;
+package com.luigiciriello.ecommerce.catalog.service.impl;
 
-import com.luigiciriello.ecommerce.customers.dto.ProductDto;
-import com.luigiciriello.ecommerce.customers.entity.Product;
-import com.luigiciriello.ecommerce.customers.exception.ResourceNotFoundException;
-import com.luigiciriello.ecommerce.customers.mapper.ProductMapper;
-import com.luigiciriello.ecommerce.customers.repository.ProductRepository;
-import com.luigiciriello.ecommerce.customers.service.IProductService;
+import com.luigiciriello.ecommerce.catalog.dto.ProductDto;
+import com.luigiciriello.ecommerce.catalog.entity.Product;
+import com.luigiciriello.ecommerce.catalog.exception.ResourceNotFoundException;
+import com.luigiciriello.ecommerce.catalog.mapper.ProductMapper;
+import com.luigiciriello.ecommerce.catalog.repository.ProductRepository;
+import com.luigiciriello.ecommerce.catalog.service.IProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

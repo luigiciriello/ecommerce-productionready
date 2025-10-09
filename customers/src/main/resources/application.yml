@@ -1,5 +1,5 @@
 server:
-  port: 2551
+  port: 2550
 
 spring:
   application:
@@ -10,7 +10,7 @@ spring:
     config:
       enabled: false
   datasource:
-    url: jdbc:postgresql://localhost:5433/customers
+    url: jdbc:postgresql://customers-db:5432/customers
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver

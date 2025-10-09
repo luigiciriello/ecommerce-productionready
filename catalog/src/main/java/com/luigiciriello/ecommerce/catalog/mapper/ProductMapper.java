@@ -1,7 +1,7 @@
-package com.luigiciriello.ecommerce.customers.mapper;
+package com.luigiciriello.ecommerce.catalog.mapper;
 
-import com.luigiciriello.ecommerce.customers.dto.ProductDto;
-import com.luigiciriello.ecommerce.customers.entity.Product;
+import com.luigiciriello.ecommerce.catalog.dto.ProductDto;
+import com.luigiciriello.ecommerce.catalog.entity.Product;
 
 public class ProductMapper {
 

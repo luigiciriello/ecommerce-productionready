@@ -1,4 +1,4 @@
-package com.luigiciriello.ecommerce.customers.dto;
+package com.luigiciriello.ecommerce.catalog.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

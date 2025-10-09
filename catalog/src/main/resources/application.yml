@@ -13,7 +13,7 @@ spring:
     init:
       mode: always #utilizzo di schema.sql per inizializzare il db
   datasource:
-    url: jdbc:postgresql://localhost:5432/catalog
+    url: jdbc:postgresql://catalog-db:5432/catalog
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver

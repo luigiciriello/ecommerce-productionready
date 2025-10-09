@@ -1,4 +1,4 @@
-package com.luigiciriello.ecommerce.customers.exception;
+package com.luigiciriello.ecommerce.catalog.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

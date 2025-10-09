@@ -1,0 +1,76 @@
+networks:
+  commerce-net:
+    driver: "bridge"
+
+services:
+  catalog:
+    image: "luigiciriello7/catalog:v1"
+    container_name: catalog-ms
+    ports:
+      - "2550:2550"
+    extends:
+      file: common-config.yml
+      service: commerce-base-config
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+
+  catalog-db:
+    container_name: catalog-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: catalog
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d catalog" ]
+    extends:
+      file: common-config.yml
+      service: commerce-db-config
+
+  customers:
+    image: "luigiciriello7/customers:v1"
+    container_name: customers-ms
+    ports:
+      - "2551:2550"
+    extends:
+      file: common-config.yml
+      service: commerce-base-config
+    depends_on:
+      customers-db:
+        condition: service_healthy
+
+  customers-db:
+    container_name: customers-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: customers
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d customers" ]
+    extends:
+      file: common-config.yml
+      service: commerce-db-config
+
+  orders:
+    image: "luigiciriello7/orders:v1"
+    container_name: orders-ms
+    ports:
+      - "2552:2550"
+    extends:
+      file: common-config.yml
+      service: commerce-base-config
+    depends_on:
+      orders-db:
+        condition: service_healthy
+
+  orders-db:
+    container_name: orders-db
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d orders" ]
+    environment:
+      POSTGRES_DB: orders
+    extends:
+      file: common-config.yml
+      service: commerce-db-config

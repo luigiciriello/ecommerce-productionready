@@ -1,6 +1,6 @@
-package com.luigiciriello.ecommerce.customers.service;
+package com.luigiciriello.ecommerce.catalog.service;
 
-import com.luigiciriello.ecommerce.customers.dto.ProductDto;
+import com.luigiciriello.ecommerce.catalog.dto.ProductDto;
 
 import java.util.List;
 

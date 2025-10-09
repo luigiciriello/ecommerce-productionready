@@ -1,8 +1,8 @@
-package com.luigiciriello.ecommerce.customers.controller;
+package com.luigiciriello.ecommerce.catalog.controller;
 
-import com.luigiciriello.ecommerce.customers.dto.ErrorResponseDto;
-import com.luigiciriello.ecommerce.customers.dto.ProductDto;
-import com.luigiciriello.ecommerce.customers.service.IProductService;
+import com.luigiciriello.ecommerce.catalog.dto.ErrorResponseDto;
+import com.luigiciriello.ecommerce.catalog.dto.ProductDto;
+import com.luigiciriello.ecommerce.catalog.service.IProductService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

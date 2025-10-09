@@ -1,6 +1,6 @@
-package com.luigiciriello.ecommerce.customers.repository;
+package com.luigiciriello.ecommerce.catalog.repository;
 
-import com.luigiciriello.ecommerce.customers.entity.Product;
+import com.luigiciriello.ecommerce.catalog.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,0 +1,20 @@
+services:
+  commerce-base-config:
+    networks:
+      - commerce-net
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  commerce-db-config:
+    extends:
+      service: commerce-base-config
+    environment:
+      POSTGRES_PASSWORD: root
+    healthcheck:
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    image: "postgres"

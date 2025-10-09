@@ -1,4 +1,4 @@
-package com.luigiciriello.ecommerce.customers;
+package com.luigiciriello.ecommerce.catalog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
