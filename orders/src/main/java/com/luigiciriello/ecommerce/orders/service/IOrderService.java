@@ -1,8 +1,9 @@
 package com.luigiciriello.ecommerce.orders.service;
 
-import com.luigiciriello.ecommerce.orders.dto.OrderDto;
+import com.luigiciriello.ecommerce.orders.dto.OrderRequestDto;
+import com.luigiciriello.ecommerce.orders.dto.OrderResponseDto;
 
 public interface IOrderService {
-    Long createOrder(final OrderDto orderDto);
-    OrderDto getOrder(final String orderId);
+    Long createOrder(final OrderRequestDto orderRequestDto);
+    OrderResponseDto getOrder(final String orderId);
 }

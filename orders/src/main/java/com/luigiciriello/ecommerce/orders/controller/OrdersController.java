@@ -1,7 +1,8 @@
 package com.luigiciriello.ecommerce.orders.controller;
 
 import com.luigiciriello.ecommerce.orders.dto.ErrorResponseDto;
-import com.luigiciriello.ecommerce.orders.dto.OrderDto;
+import com.luigiciriello.ecommerce.orders.dto.OrderRequestDto;
+import com.luigiciriello.ecommerce.orders.dto.OrderResponseDto;
 import com.luigiciriello.ecommerce.orders.service.IOrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -46,8 +47,8 @@ public class OrdersController {
     }
     )
     @PostMapping("/place")
-    public ResponseEntity<Long> createOrder(@Valid @RequestBody final OrderDto orderDto) {
-        final Long orderId = orderService.createOrder(orderDto);
+    public ResponseEntity<Long> createOrder(@Valid @RequestBody final OrderRequestDto orderRequestDto) {
+        final Long orderId = orderService.createOrder(orderRequestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -73,11 +74,11 @@ public class OrdersController {
     }
     )
     @GetMapping("/get")
-    public ResponseEntity<OrderDto> getOrder(@Valid @RequestParam final String orderId) {
-        final OrderDto orderDto = orderService.getOrder(orderId);
+    public ResponseEntity<OrderResponseDto> getOrder(@Valid @RequestParam final String orderId) {
+        final OrderResponseDto responseDto = orderService.getOrder(orderId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(orderDto);
+                .body(responseDto);
     }
 }
