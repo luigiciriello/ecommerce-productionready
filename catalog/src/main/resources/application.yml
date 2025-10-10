@@ -26,3 +26,34 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true #utilizzo di schema.sql per inizializzare il db
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://eurekaserver:8070/eureka/
+
+management:
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "catalog"
+    description: "Catalog microservice"
+    version: "1.0.0"

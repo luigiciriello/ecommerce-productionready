@@ -29,6 +29,8 @@
     <properties>
         <java.version>25</java.version>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>com.luigiciriello.ecommerce.eurekaserver.EurekaserverApplication</start-class>
     </properties>
     <dependencies>
         <dependency>
@@ -67,6 +69,26 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:25-alpine</image>
+                    </from>
+                    <to>
+                        <image>luigiciriello7/${project.artifactId}:v1</image>
+                    </to>
+                    <container>
+                        <mainClass>${start-class}</mainClass>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                    </container>
+                </configuration>
             </plugin>
         </plugins>
     </build>

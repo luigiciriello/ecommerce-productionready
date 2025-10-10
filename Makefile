@@ -9,6 +9,7 @@ COMPOSE_FILE ?= docker-compose/default/docker-compose.yml
 CATALOG_DIR := catalog
 CUSTOMERS_DIR := customers
 ORDERS_DIR := orders
+EUREKA_DIR := eurekaserver
 
 # Target di default: build immagini -> up
 .PHONY: all
@@ -19,24 +20,30 @@ all: images up
 build:
 	@echo ">> Build maven"
 	cd $(CATALOG_DIR) && mvn -q clean package
+	cd $(EUREKA_DIR) && mvn -q clean package
 	cd $(CUSTOMERS_DIR) && mvn -q clean package
 	cd $(ORDERS_DIR) && mvn -q clean package
 
 build-skip-tests:
 	@echo ">> Build Maven Without tests"
 	cd $(CATALOG_DIR) && mvn -q clean package -DskipTests
+	cd $(EUREKA_DIR) && mvn -q clean package -DskipTests
 	cd $(CUSTOMERS_DIR) && mvn -q clean package -DskipTests
 	cd $(ORDERS_DIR) && mvn -q clean package -DskipTests
 
 # ===== Costruzione immagini con Jib =====
-.PHONY: images image-catalog image-customers image-orders
-images: image-catalog image-customers image-orders
+.PHONY: images image-catalog image-customers image-orders image-eureka
+images: image-catalog image-customers image-orders image-eureka
 	@echo ">> Built all images"
 
 # Nota: parallelizza con `make -j images` o `make -j all`
 image-catalog:
 	@echo ">> Starting catalog image build"
 	cd $(CATALOG_DIR) && mvn -q compile jib:dockerBuild -Dimage=$(REGISTRY)/catalog:$(TAG)
+
+image-eureka:
+	@echo ">> Starting eureka image build"
+	cd $(EUREKA_DIR) && mvn -q compile jib:dockerBuild -Dimage=$(REGISTRY)/eurekaserver:$(TAG)
 
 image-customers:
 	@echo ">> Starting customers image build"
@@ -66,6 +73,7 @@ logs:
 clean:
 	@echo ">> Clean Maven target"
 	cd $(CATALOG_DIR) && mvn -q clean
+	cd $(EUREKA_DIR) && mvn -q clean
 	cd $(CUSTOMERS_DIR) && mvn -q clean
 	cd $(ORDERS_DIR) && mvn -q clean
 
@@ -77,3 +85,4 @@ push:
 	docker image push $(REGISTRY)/catalog:$(TAG)
 	docker image push $(REGISTRY)/customers:$(TAG)
 	docker image push $(REGISTRY)/orders:$(TAG)
+	docker image push $(REGISTRY)/eurekaserver:$(TAG)
