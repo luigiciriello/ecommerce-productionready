@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: gatewayserver
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              lower-case-service-id: true
+              enabled: true
+          httpclient:
+            connect-timeout: 1000
+            response-timeout: 2s
+
+server:
+  port: 8072
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://eurekaserver:8070/eureka/
+
+management:
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+    gateway:
+      access: read_only
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  info:
+    env:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10 #numero di request che devono andare in errore prima che lo stato venga cambiato da closed ad open
+        permitted-number-of-calls-in-half-open-state: 2 #fai passare 2 request nello stato half-closed per decidere se cambiare di nuovo status
+        failure-rate-threshold: 50 #se 50% delle request fallisce, allora vai in closed state
+        wait-duration-in-open-state: 10000 #aspetta 10 secondi prima di andare in half closed
+
+

@@ -132,7 +132,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <from>
-                        <image>eclipse-temurin:25-jre</image>
+                        <image>eclipse-temurin:25-alpine</image>
                     </from>
                     <to>
                         <image>luigiciriello7/${project.artifactId}:v1</image>

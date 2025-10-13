@@ -10,6 +10,7 @@ CATALOG_DIR := catalog
 CUSTOMERS_DIR := customers
 ORDERS_DIR := orders
 EUREKA_DIR := eurekaserver
+GATEWAY_DIR := gatewayserver
 
 # Target di default: build immagini -> up
 .PHONY: all
@@ -23,6 +24,7 @@ build:
 	cd $(EUREKA_DIR) && mvn -q clean package
 	cd $(CUSTOMERS_DIR) && mvn -q clean package
 	cd $(ORDERS_DIR) && mvn -q clean package
+	cd $(GATEWAY_DIR) && mvn -q clean package
 
 build-skip-tests:
 	@echo ">> Build Maven Without tests"
@@ -30,10 +32,11 @@ build-skip-tests:
 	cd $(EUREKA_DIR) && mvn -q clean package -DskipTests
 	cd $(CUSTOMERS_DIR) && mvn -q clean package -DskipTests
 	cd $(ORDERS_DIR) && mvn -q clean package -DskipTests
+	cd $(GATEWAY_DIR) && mvn -q clean package -DskipTests
 
 # ===== Costruzione immagini con Jib =====
-.PHONY: images image-catalog image-customers image-orders image-eureka
-images: image-catalog image-customers image-orders image-eureka
+.PHONY: images image-catalog image-customers image-orders image-eureka image-gateway
+images: image-catalog image-customers image-orders image-eureka image-gateway
 	@echo ">> Built all images"
 
 # Nota: parallelizza con `make -j images` o `make -j all`
@@ -44,6 +47,10 @@ image-catalog:
 image-eureka:
 	@echo ">> Starting eureka image build"
 	cd $(EUREKA_DIR) && mvn -q compile jib:dockerBuild -Dimage=$(REGISTRY)/eurekaserver:$(TAG)
+
+image-gateway:
+	@echo ">> Starting gateway image build"
+	cd $(GATEWAY_DIR) && mvn -q compile jib:dockerBuild -Dimage=$(REGISTRY)/gatewayserver:$(TAG)
 
 image-customers:
 	@echo ">> Starting customers image build"
@@ -76,6 +83,7 @@ clean:
 	cd $(EUREKA_DIR) && mvn -q clean
 	cd $(CUSTOMERS_DIR) && mvn -q clean
 	cd $(ORDERS_DIR) && mvn -q clean
+	cd $(GATEWAY_DIR) && mvn -q clean
 
 .PHONY: rebuild
 rebuild: clean all
@@ -86,3 +94,4 @@ push:
 	docker image push $(REGISTRY)/customers:$(TAG)
 	docker image push $(REGISTRY)/orders:$(TAG)
 	docker image push $(REGISTRY)/eurekaserver:$(TAG)
+	docker image push $(REGISTRY)/gatewayserver:$(TAG)

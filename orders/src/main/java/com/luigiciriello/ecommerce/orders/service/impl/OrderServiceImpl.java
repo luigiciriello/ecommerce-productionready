@@ -12,9 +12,12 @@ import com.luigiciriello.ecommerce.orders.service.IOrderService;
 import com.luigiciriello.ecommerce.orders.service.client.CatalogFeignClient;
 import com.luigiciriello.ecommerce.orders.service.client.CustomersFeignClient;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -26,9 +29,14 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public Long createOrder(final OrderRequestDto orderRequestDto) {
         final CommerceOrder order = OrderMapper.mapOrderDtoToEntity(orderRequestDto, new CommerceOrder());
-        final Double totalPrice = getProducts(orderRequestDto.getProducts()).stream().mapToDouble(ProductDto::getPrice).sum();
-        final CustomerDto customer = customersFeignClient.fetchCustomer(order.getCustomerEmail()).getBody();
-        order.setShippingAddress(customer.getAddress());
+        final Double totalPrice = getProducts(orderRequestDto.getProducts()).stream()
+                .mapToDouble(productDto -> Objects.nonNull(productDto) ? productDto.getPrice() : 0).sum();
+
+        final ResponseEntity<CustomerDto> customerResponse = customersFeignClient.fetchCustomer(order.getCustomerEmail());
+        if (Objects.nonNull(customerResponse) && Objects.nonNull(customerResponse.getBody())) {
+            order.setShippingAddress(customerResponse.getBody().getAddress());
+        }
+
         order.setTotalPrice(totalPrice);
         orderRepository.save(order);
         return order.getId();
@@ -42,13 +50,24 @@ public class OrderServiceImpl implements IOrderService {
         final OrderResponseDto responseDto = new OrderResponseDto();
         responseDto.setOrderId(String.valueOf(commerceOrder.getId()));
         responseDto.setProducts(getProducts(commerceOrder.getProducts()));
-        responseDto.setCustomer(customersFeignClient.fetchCustomer(commerceOrder.getCustomerEmail()).getBody());
+        final ResponseEntity<CustomerDto> customerDtoResponseEntity = customersFeignClient.fetchCustomer(commerceOrder.getCustomerEmail());
+
+        if (Objects.nonNull(customerDtoResponseEntity) && Objects.nonNull(customerDtoResponseEntity.getBody())) {
+            responseDto.setCustomer(customerDtoResponseEntity.getBody());
+        }
+
         responseDto.setTotalPrice(commerceOrder.getTotalPrice());
 
         return responseDto;
     }
 
     private List<ProductDto> getProducts(final List<String> productCodes) {
-        return productCodes.stream().map(productCode -> catalogFeignClient.fetchProduct(productCode).getBody()).toList();
+        return productCodes.stream()
+                .map(catalogFeignClient::fetchProduct)
+                .filter(Objects::nonNull)
+                .filter(ResponseEntity::hasBody)
+                .filter(r -> r.getStatusCode().is2xxSuccessful())
+                .map(ResponseEntity::getBody)
+                .toList();
     }
 }

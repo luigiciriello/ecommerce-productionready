@@ -49,7 +49,7 @@ public class CustomerController {
     }
     )
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<CustomerDto> getCustomer(@RequestParam final String email) {
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomerByEmail(email));
     }
