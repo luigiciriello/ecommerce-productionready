@@ -135,6 +135,15 @@ services:
         condition: service_healthy
       orders:
         condition: service_healthy
+    environment:
+      SPRING_DATA_REDIS_HOST: redis
+    extends:
+      file: common-config.yml
+      service: commerce-base-config
+
+  redis:
+    image: "redis"
+    container_name: redis-ecommerce
     extends:
       file: common-config.yml
       service: commerce-base-config
