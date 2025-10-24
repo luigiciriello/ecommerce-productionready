@@ -4,16 +4,18 @@ server:
 spring:
   application:
     name: catalog
+  profiles:
+    active: local
   config:
-    import: optional:configserver
+    import: optional:configserver:http://localhost:8888
   cloud:
     config:
-      enabled: false
+      uri: http://localhost:8888
   sql:
     init:
       mode: always #utilizzo di schema.sql per inizializzare il db
   datasource:
-    url: jdbc:postgresql://catalog-db:5432/catalog
+    url: jdbc:postgresql://localhost:5432/catalog
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -34,7 +36,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://eurekaserver:8070/eureka/
+      defaultZone: http://localhost:8070/eureka/
 
 management:
   health:

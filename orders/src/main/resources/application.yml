@@ -1,19 +1,21 @@
 server:
-  port: 2550
+  port: 2551
 
 spring:
   application:
     name: orders
+  profiles:
+    active: local
   config:
-    import: optional:configserver
+    import: optional:configserver:http://localhost:8888
   cloud:
     config:
-      enabled: false
+      uri: http://localhost:8888
     openfeign:
       circuitbreaker:
         enabled: true
   datasource:
-    url: jdbc:postgresql://orders-db:5432/orders
+    url: jdbc:postgresql://localhost:5434/orders
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -33,7 +35,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://eurekaserver:8070/eureka/
+      defaultZone: http://localhost:8070/eureka/
 
 management:
   health:

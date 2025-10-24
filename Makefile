@@ -11,6 +11,7 @@ CUSTOMERS_DIR := customers
 ORDERS_DIR := orders
 EUREKA_DIR := eurekaserver
 GATEWAY_DIR := gatewayserver
+CONFIGSERVER_DIR := configserver
 
 # Target di default: build immagini -> up
 .PHONY: all
@@ -25,6 +26,7 @@ build:
 	cd $(CUSTOMERS_DIR) && mvn -q clean package
 	cd $(ORDERS_DIR) && mvn -q clean package
 	cd $(GATEWAY_DIR) && mvn -q clean package
+	cd $(CONFIGSERVER_DIR) && mvn -q clean package
 
 build-skip-tests:
 	@echo ">> Build Maven Without tests"
@@ -33,10 +35,11 @@ build-skip-tests:
 	cd $(CUSTOMERS_DIR) && mvn -q clean package -DskipTests
 	cd $(ORDERS_DIR) && mvn -q clean package -DskipTests
 	cd $(GATEWAY_DIR) && mvn -q clean package -DskipTests
+	cd $(CONFIGSERVER_DIR) && mvn -q clean package -DskipTests
 
 # ===== Costruzione immagini con Jib =====
-.PHONY: images image-catalog image-customers image-orders image-eureka image-gateway
-images: image-catalog image-customers image-orders image-eureka image-gateway
+.PHONY: images image-catalog image-customers image-orders image-eureka image-gateway image-config
+images: image-catalog image-customers image-orders image-eureka image-gateway image-config
 	@echo ">> Built all images"
 
 # Nota: parallelizza con `make -j images` o `make -j all`
@@ -59,6 +62,10 @@ image-customers:
 image-orders:
 	@echo ">> Starting orders image build"
 	cd $(ORDERS_DIR) && mvn -q compile jib:dockerBuild -Dimage=$(REGISTRY)/orders:$(TAG)
+
+image-config:
+	@echo ">> Starting config image build"
+	cd $(CONFIGSERVER_DIR) && mvn -q compile jib:dockerBuild -Dimage=$(REGISTRY)/configserver:$(TAG)
 
 # ===== Compose =====
 .PHONY: up
@@ -84,6 +91,7 @@ clean:
 	cd $(CUSTOMERS_DIR) && mvn -q clean
 	cd $(ORDERS_DIR) && mvn -q clean
 	cd $(GATEWAY_DIR) && mvn -q clean
+	cd $(CONFIGSERVER_DIR) && mvn -q clean
 
 .PHONY: rebuild
 rebuild: clean all
@@ -95,3 +103,4 @@ push:
 	docker image push $(REGISTRY)/orders:$(TAG)
 	docker image push $(REGISTRY)/eurekaserver:$(TAG)
 	docker image push $(REGISTRY)/gatewayserver:$(TAG)
+	docker image push $(REGISTRY)/configserver:$(TAG)

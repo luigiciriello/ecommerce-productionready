@@ -1,16 +1,18 @@
 server:
-  port: 2550
+  port: 2552
 
 spring:
   application:
     name: customers
+  profiles:
+      active: local
   config:
-    import: optional:configserver
+    import: optional:configserver:http://localhost:8888
   cloud:
     config:
-      enabled: false
+      uri: http://localhost:8888
   datasource:
-    url: jdbc:postgresql://customers-db:5432/customers
+    url: jdbc:postgresql://localhost:5433/customers
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -30,7 +32,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://eurekaserver:8070/eureka/
+      defaultZone: http://localhost:8070/eureka/
 
 management:
   health:

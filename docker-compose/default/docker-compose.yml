@@ -6,8 +6,6 @@ services:
   catalog:
     image: "luigiciriello7/catalog:v1"
     container_name: catalog-ms
-    ports:
-      - "2550:2550"
     extends:
       file: common-config.yml
       service: commerce-base-config
@@ -15,6 +13,8 @@ services:
       catalog-db:
         condition: service_healthy
       eurekaserver:
+        condition: service_healthy
+      configserver:
         condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "nc -z 127.0.0.1 2550 || exit 1" ] #This healthcheck is not 100% accurate,
@@ -24,6 +24,10 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8888
 
   catalog-db:
     container_name: catalog-db
@@ -40,8 +44,10 @@ services:
   customers:
     image: "luigiciriello7/customers:v1"
     container_name: customers-ms
-    ports:
-      - "2551:2550"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8888
     extends:
       file: common-config.yml
       service: commerce-base-config
@@ -49,6 +55,8 @@ services:
       customers-db:
         condition: service_healthy
       eurekaserver:
+        condition: service_healthy
+      configserver:
         condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "nc -z 127.0.0.1 2550 || exit 1" ] #This healthcheck is not 100% accurate,
@@ -75,15 +83,19 @@ services:
   orders:
     image: "luigiciriello7/orders:v1"
     container_name: orders-ms
-    ports:
-      - "2552:2550"
     extends:
       file: common-config.yml
       service: commerce-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8888
     depends_on:
       orders-db:
         condition: service_healthy
       eurekaserver:
+        condition: service_healthy
+      configserver:
         condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "nc -z 127.0.0.1 2550 || exit 1" ] #This healthcheck is not 100% accurate,
@@ -135,6 +147,23 @@ services:
         condition: service_healthy
       orders:
         condition: service_healthy
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_DATA_REDIS_HOST: redis
+    extends:
+      file: common-config.yml
+      service: commerce-base-config
+
+  configserver:
+    image: "luigiciriello7/configserver:v1"
+    container_name: configserver-ms
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -z 127.0.0.1 8888 || exit 1" ] #This healthcheck is not 100% accurate,
+      #"curl --fail --silent localhost:8888/actuator/health/readiness | grep UP || exit 1" is definitely more accurate,
+      #but the current base docker image doesn't have curl installed, TODO solve this issue
     environment:
       SPRING_DATA_REDIS_HOST: redis
     extends:
@@ -147,3 +176,4 @@ services:
     extends:
       file: common-config.yml
       service: commerce-base-config
+
